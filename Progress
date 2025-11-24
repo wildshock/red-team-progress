@@ -3,3 +3,5 @@ Day 1 Red Teaming:
       Vm Machine :  SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
       payload used: select * from Product where = '' or 1=1--
 
+      VM Machine : SQL Injection to bypass login page
+
