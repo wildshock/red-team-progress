@@ -5,3 +5,5 @@ Day 1 Red Teaming:
 
       VM Machine : SQL Injection to bypass login page
 
+      VM Machine : SQL injection attack, querying the database type and version on Oracle
+
