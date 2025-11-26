@@ -1,1 +1,105 @@
+Vulnerability: SQL Injection – Listing contents on Non-Oracle Databases
+The application’s category filtering functionality is vulnerable to SQL injection. By exploiting the parameter used to fetch products belonging to a category, an attacker can modify the SQL query using a crafted UNION SELECT payload.
+This allows enumeration of Oracle database version information and its contents, which is highly sensitive as it directly reveals all the sensitive information in a database.
 
+This vulnerability demonstrates that the backend is using an Non-Oracle database and reveals its exact version.
+
+Attack Surface
+
+The vulnerable parameter exists in:
+
+/filter?category=<input>
+
+
+When a category is selected, the input is inserted directly into an SQL query without sanitization:
+
+SELECT * FROM products WHERE category = '<input>';
+
+
+This allows attackers to:
+
+inject SQL logic
+
+extend the query using UNION SELECT
+
+extract data from system tables (@@version in Microsoft)
+
+The system does not validate the number of returned columns or data types, enabling successful UNION injection.
+
+Exploitation Steps
+
+Navigate to the home page and intercept the category request using Burp Suite
+(optional, but recommended for clarity).
+
+Click on any product category — this triggers the vulnerable query.
+
+Modify the category parameter by adding a UNION-based SQL injection payload that queries Microsoft Database contents.
+
+Send the request.
+The backend concatenates the attacker-controlled query to the legitimate one.
+
+The response page displays the output of selected tables from the database, revealing all the information.
+
+Payload Used
+' UNION SELECT @@version--
+' ORDER BY 2 (To check how many columns there are)
+' UNION SELECT table_name,NULL FROM information_schema.tables--
+' UNION SELECT column_name,NULL FROM information_schema.columns where table_name = users_ueqxii--
+' UNION SELECT username,password FROM users_ueqxii--
+
+
+Explanation:
+
+UNION SELECT retrieves results from another table.
+
+@@version contains database version metadata.
+
+information_schema.tables is a table with all the tables in a database.
+information_schema.columns is a table with all the column names.
+
+-- comments out the rest of the original query.
+
+This payload merges database metadata into the UI where product results are normally displayed.
+
+Impact
+
+Revealing database version information enables attackers to:
+
+Identify exact database version, edition, and patch level
+
+Map known Oracle vulnerabilities (CVE mapping becomes trivial)
+
+Plan targeted exploitation based on version-specific exploits
+
+Develop payloads for privilege escalation, RCE, or lateral movement
+
+Chain attacks with existing SQL injection to extract sensitive data
+
+Version disclosure on top of an injection vulnerability increases risk to Critical.
+
+Fix
+1. Use prepared statements (parameterized queries)
+
+Prevent SQL injection by ensuring user input is never directly concatenated into queries.
+
+2. Enforce strict input validation
+
+Reject or sanitize unexpected characters such as ', ", ;, --, etc.
+
+3. Disable database error leakage
+
+Do not expose stack traces or database messages in UI responses.
+
+4. Use least-privilege DB accounts
+
+The application user should not have permissions to read v$version or other system tables.
+
+5. Implement Web Application Firewall (WAF) rules
+
+Detect and block:
+
+UNION-based injection
+
+comment sequences
+
+known SQLi patterns
