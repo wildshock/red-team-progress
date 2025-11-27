@@ -6,3 +6,6 @@ Portswigger SQL Injection login bypass--
     SqL query probably works like select * from table where username = "" and password = ""
     username doesnt matter, password can be bypassed using or operator ensuring first field is false and the other field is naturally true such as 1=1--
     Username as "admin" password bypassed by 'or'1'='1
+
+SQL Injection:
+  "--" to truncate the other values or comment them out
