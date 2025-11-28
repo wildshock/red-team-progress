@@ -11,3 +11,4 @@ SQL Injection:
   "--" to truncate the other values or comment them out
   infromation_schema.table/columns for non oracle based databases
   all_tables/all_columns for oracle based databases
+
